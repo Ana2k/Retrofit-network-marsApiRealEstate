@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018, The Android Open Source Project
  *
@@ -17,23 +18,32 @@
 
 package com.example.android.marsrealestate.network
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://mars.udacity.com/"
 
+//Moshi builder to create a moshi object--with kotlin json adapterFactory
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
+
 //Add an instance of ScalarsConverterFactory and the BASE_URL we provided, then call build() to create the Retrofit object.
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .addCallAdapterFactory(CoroutineCallAdapterFactory())
     .baseUrl(BASE_URL)
     .build()
 
 interface MarsApiService{
     @GET("realestate")//path or end point to use in basurl
     fun getProperties():
-            Call<String>
+            Deferred<List<MarsProperty>>
 }//expensive call--so create an object
 
 object MarsApi{

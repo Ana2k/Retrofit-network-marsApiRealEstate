@@ -35,7 +35,7 @@ class DetailFragment : Fragment() {
         val application = requireNotNull(activity).application
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        return binding.root
+
         //In DetailFragment, in onCreateView() create a marsProperty
         //variable from the DetailFragmentArgs arguments,
         //then use it to create a DetailViewModelFactory
